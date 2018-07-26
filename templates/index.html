@@ -11,6 +11,7 @@
         .weather-box {
             outline: solid 1px black;
             padding: 10px;
+            overflow-wrap: break-word;
         }
         
         .image-box {
@@ -50,12 +51,11 @@
                 <div class="col-sm-4">
                     <div class="col-sm-12 weather-box">
                         <h3>Current Weather on Mars</h3>
-                        <p>Weather: {{ content.mars_weather }}</p>
+                        <p>{{ content.mars_weather }}</p>
                     </div>
                     <div class="col-sm-12 box">
                        <h3>Mars Facts</h3>
-                    <!-- <p>{{ content.mars_facts }}</p> -->
-                       <p>Mars Facts table goes here :(</p>
+                        {{ content.mars_facts | safe}}
                     </div>
                 </div>
             </div>

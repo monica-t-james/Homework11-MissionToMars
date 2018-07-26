@@ -66,7 +66,7 @@ def scrape():
     soup = bs(html, 'html.parser')
 
     # Save the Mars weather tweet
-    content["mars_weather"] = soup.find('p', class_="TweetTextSize").text
+    content["mars_weather"] = soup.find('p', class_="tweet-text").text
 
     # Use Pandas to scrape the table containing facts about the planet including Diameter, Mass, etc.
     url = "http://space-facts.com/mars/"
@@ -82,9 +82,13 @@ def scrape():
     mars_facts.columns = ["Description", "Value"]
 
     # Remove the index column
-    # mars_facts.set_index("Description", inplace = True)
+    mars_facts.set_index("Description", inplace = True)
 
-    content["mars_facts"] = mars_facts
+    # Convert to HTML
+    mars_facts_html = mars_facts.to_html(classes="table table-striped")
+    
+    # Save the Mars facts table
+    content["mars_facts_html"]= mars_facts_html
 
     # Visit the USGS Astrogeology site to obtain high resolution images for each of Mar's hemispheres.
     url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
@@ -134,6 +138,8 @@ def scrape():
         time.sleep(2)
 
     content["hemisphere_image_urls"] = hemisphere_image_urls
+
+    browser.quit()
 
     return content
 

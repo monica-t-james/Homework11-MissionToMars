@@ -10,7 +10,6 @@ app.config["MONGO_URI"] = "mongodb://localhost:27017/myDatabase"
 # Use flask_pymongo to set up mongo connection
 mongo = PyMongo(app)
 
-
 # create route that renders index.html template and finds documents from mongo
 @app.route("/")
 def home():
@@ -36,11 +35,14 @@ def scrape():
         "news_blurb": news["news_blurb"],
         "featured_image_url": news["featured_image_url"],
         "mars_weather": news["mars_weather"],
-        # "mars_facts": news["mars_facts"],
+        "mars_facts": news["mars_facts_html"],
         "hemisphere_image_urls": news["hemisphere_image_urls"]
     }
 
-    # Insert content into database
+    # Delete previous news content, if it exists
+    mongo.db.news_content.drop()
+
+    # Insert new content into database
     mongo.db.news_content.insert_one(content)
 
     # Redirect back to home page
